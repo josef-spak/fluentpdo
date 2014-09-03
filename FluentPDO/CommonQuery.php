@@ -10,6 +10,9 @@ abstract class CommonQuery extends BaseQuery {
 	/** @var boolean disable adding undefined joins to query? */
 	protected $isSmartJoinEnabled = true;
 
+	/** @var string SQL to use for undefined joins */
+	protected $smartJoinType = 'LEFT JOIN';
+
 	public function enableSmartJoin() {
 		$this->isSmartJoinEnabled = true;
 		return $this;
@@ -22,6 +25,14 @@ abstract class CommonQuery extends BaseQuery {
 
 	public function isSmartJoinEnabled() {
 		return $this->isSmartJoinEnabled;
+	}
+
+	public function setSmartJoinType($joinType) {
+		$this->smartJoinType = $joinType;
+	}
+
+	public function getSmartJoinType() {
+		return $this->smartJoinType;
 	}
 
 	/** Add where condition, more calls appends with AND
@@ -211,7 +222,7 @@ abstract class CommonQuery extends BaseQuery {
 		preg_match_all('~\\b([a-z_][a-z0-9_.:]*[.:])[a-z_]*~i', $statement, $matches);
 		foreach ($matches[1] as $join) {
 			if (!in_array(substr($join, 0, -1), $this->joins)) {
-				$this->addJoinStatements('LEFT JOIN', $join);
+				$this->addJoinStatements($this->smartJoinType, $join);
 			}
 		}
 
