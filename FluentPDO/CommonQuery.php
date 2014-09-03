@@ -11,7 +11,7 @@ abstract class CommonQuery extends BaseQuery {
 	protected $isSmartJoinEnabled = true;
 
 	/** @var string SQL to use for undefined joins */
-	protected $smartJoinType = 'LEFT JOIN';
+	protected $smartJoinType = 'INNER JOIN';
 
 	public function enableSmartJoin() {
 		$this->isSmartJoinEnabled = true;
